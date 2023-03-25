@@ -1,0 +1,6 @@
+@inproceedings{cao2023sesdf,
+author    = {Yukang Cao and Kai Han and Kwan-Yee K. Wong},
+title     = {SeSDF: Self-evolved Signed Distance Field for Implicit 3D Clothed Human Reconstruction},
+booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+year      = {2023},
+}

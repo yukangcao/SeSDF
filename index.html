@@ -1,0 +1,326 @@
+<script src="http://www.google.com/jsapi" type="text/javascript"></script> 
+<script type="text/javascript">google.load("jquery", "1.3.2");</script>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans&display=swap"
+      rel="stylesheet">
+<link rel="stylesheet" type="text/css" href="./index_files/style.css" media="screen"/>
+
+
+<style type="text/css">
+	body {
+		font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif; 
+		font-weight:300;
+		font-size:18px;
+		margin-left: auto;
+		margin-right: auto;
+		width: 1000px;
+	}	
+	h1 {
+		font-weight:300;
+	}
+	
+	.disclaimerbox {
+		background-color: #eee;		
+		border: 1px solid #eeeeee;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+		padding: 20px;
+	}
+
+	video.header-vid {
+		height: 140px;
+		border: 1px solid black;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+	}
+	
+	img.header-img {
+		height: 140px;
+		border: 1px solid black;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+	}
+	
+	img.rounded {
+		border: 0px solid #eeeeee;
+		border-radius: 10px ;
+		-moz-border-radius: 10px ;
+		-webkit-border-radius: 10px ;
+	}
+	
+	a:link,a:visited
+	{
+		color: #1367a7;
+		text-decoration: none;
+	}
+	a:hover {
+		color: #208799;
+	}
+	
+	td.dl-link {
+		height: 160px;
+		text-align: center;
+		font-size: 22px;
+	}
+	
+	.layered-paper-big { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		        0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+		        5px 5px 0 0px #fff, /* The second layer */
+		        5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+		        10px 10px 0 0px #fff, /* The third layer */
+		        10px 10px 1px 1px rgba(0,0,0,0.35), /* The third layer shadow */
+		        15px 15px 0 0px #fff, /* The fourth layer */
+		        15px 15px 1px 1px rgba(0,0,0,0.35), /* The fourth layer shadow */
+		        20px 20px 0 0px #fff, /* The fifth layer */
+		        20px 20px 1px 1px rgba(0,0,0,0.35), /* The fifth layer shadow */
+		        25px 25px 0 0px #fff, /* The fifth layer */
+		        25px 25px 1px 1px rgba(0,0,0,0.35); /* The fifth layer shadow */
+		margin-left: 10px;
+		margin-right: 45px;
+	}
+
+	.paper-big { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		        0px 0px 1px 1px rgba(0,0,0,0.35); /* The top layer shadow */
+
+		margin-left: 10px;
+		margin-right: 45px;
+	}
+
+
+	.layered-paper { /* modified from: http://css-tricks.com/snippets/css/layered-paper/ */
+		box-shadow:
+		        0px 0px 1px 1px rgba(0,0,0,0.35), /* The top layer shadow */
+		        5px 5px 0 0px #fff, /* The second layer */
+		        5px 5px 1px 1px rgba(0,0,0,0.35), /* The second layer shadow */
+		        10px 10px 0 0px #fff, /* The third layer */
+		        10px 10px 1px 1px rgba(0,0,0,0.35); /* The third layer shadow */
+		margin-top: 5px;
+		margin-left: 10px;
+		margin-right: 30px;
+		margin-bottom: 5px;
+	}
+	
+	.vert-cent {
+		position: relative;
+	    top: 50%;
+	    transform: translateY(-50%);
+	}
+	
+	hr
+	{
+		border: 0;
+		height: 1px;
+		background-image: linear-gradient(to right, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75), rgba(0, 0, 0, 0));
+	}
+</style>
+
+<html lang="en">
+  <head>
+		<title>SeSDF: Self-evolved Signed Distance Field for Implicit 3D Clothed Human Reconstruction</title>
+  </head>
+
+  <body>
+    <br>
+          <center>
+          	<span style="font-size:40px">SeSDF: Self-evolved Signed Distance Field for Implicit 3D Clothed Human Reconstruction</span><br>
+	  		  <table align=center width=1000px>
+	  			  <tr>
+	  	              <td align=center width=100px>
+	  					<center>
+	  						<span style="font-size:20px"><a href="https://yukangcao.github.io">Yukang Cao</a></span>
+		  		  		</center>
+		  		  	  </td>
+	  	              <td align=center width=100px>
+	  					<center>
+	  						<span style="font-size:20px"><a href="https://www.kaihan.org/">Kai Han</a></span>
+		  		  		</center>
+		  		  	  </td>
+	  	              <td align=center width=100px>
+	  					<center>
+	  						<span style="font-size:20px"><a href="https://i.cs.hku.hk/~kykwong/">Kwan-Yee K. Wong</a></span>
+		  		  		</center>
+		  		  	  </td>
+			  </table>
+          	<span style="font-size:22px">The University of Hong Kong</span>
+
+	  		  <table align=center width=720px>
+	  			  <tr>
+	  	              <td align=center width=400px>
+	  					<center>
+	  						<span style="font-size:22px"><a href=''> Code[Coming]</a></span>
+		  		  		</center>
+		  		  	  </td>
+	  	              <td align=center width=400px>
+	  					<center>
+	  						<span style="font-size:22px"><a href = "./index_files/SeSDF_05448.pdf"> CVPR 2023 [Paper]</a></span>
+		  		  		</center>
+		  		  	  </td>
+	  	              <td align=center width=400px>
+	  					<center>
+	  						<span style="font-size:22px"><a href="./index_files/SeSDF_05448_supp.pdf"> Supplementary </a></span>
+		  		  		</center>
+		  		  	  </td>
+			  </table>
+          </center>
+  		  <br>
+
+  		<table align=center width=1000px>
+  		<br>
+  		<br>
+  			  <!-- <tr> -->
+  	              <td align=center width=1000px>
+  					<center>
+						  <td><img class="round" style="width:1000px" src="./index_files/Teaser.png"/></a>
+						  </td>
+	  		  		</center>
+	  		  		</td>
+			  <!-- </tr> -->
+		  </table>
+
+  		  <br>
+		  <hr>
+
+  		  <table align=center width=900px>
+	  		  <center><h1>Abstract</h1></center>
+					We address the problem of clothed human reconstruction from a single image or uncalibrated multi-view images. Existing methods struggle with reconstructing detailed geometry of a clothed human and often require a calibrated setting for multi-view reconstruction. We propose a flexible framework which, by leveraging the parametric SMPL-X model, can take an arbitrary number of input images to reconstruct a clothed human model under an uncalibrated setting. At the core of our framework is our novel self-evolved signed distance field (SeSDF) module which allows the framework to learn to deform the signed distance field (SDF) derived from the fitted SMPL-X model, such that detailed geometry reflecting the actual clothed human can be encoded for better reconstruction. Besides, we propose a simple method for self-calibration of multi-view images via the fitted SMPL-X parameters. This lifts the requirement of tedious manual calibration and largely increases the flexibility of our method. Further, we introduce an effective occlusion-aware feature fusion strategy to account for the most useful features to reconstruct the human model. We thoroughly evaluate our framework on public benchmarks, and our framework establishes a new state-of-the-art. 
+  		  <br>
+		  <hr>
+
+ 		<table align=center width=900px>
+    		<center><h1>Video</h1></center>
+                    <tr>
+                        <td width=1000px>
+                          <center>
+
+                            <div class = "video">
+                              <video src="./index_files/SeSDF_5448_demo.mp4" style="max-width:100%;" playsinline autoplay loop preload muted></video>
+                            </div>
+                        </center>
+                        </td>
+                    </tr>
+		</table>
+		<hr>
+
+		<table align=center>
+    		<center><h1>Method</h1></center>
+    		<tr>
+        		<td align=center width=1000px>
+            		<img class="round" style="width:1000px" src="./index_files/cvpr2023_framework.png"/></img>
+        		</td>
+   			</tr>
+		</table>
+		<hr>
+
+ 		<center><h1>Single-view Results</h1></center>
+                <!-- <table align=center width=1000px>
+                    <tr>
+                        <td width=1000px>
+                          <center>
+
+                            <div class = "video">
+                              <video src="./index_files/webpage_mp4_full.mp4" style="max-width:100%;" playsinline autoplay loop preload muted></video>
+                            </div>
+                        </center>
+                        </td>
+                    </tr>
+                </table>
+                <br>
+                <hr>
+
+ 		</table> -->
+  		<table align=center width=1000px>
+  		<br>
+  		<br>
+  			  <!-- <tr> -->
+  	              <td align=center width=1000px>
+  					<center>
+						  <td><img class="round" style="width:1000px" src="./index_files/ours-SOTA_all.png"/></a>
+						  </td>
+	  		  		</center>
+	  		  		</td>
+			  <!-- </tr> -->
+		  </table>
+
+		<br>
+
+		  <hr>
+ 		<center><h1>Multi-view Results</h1></center>
+		<br>
+		<table align=center width=1000px>
+  		<br>
+  		<br>
+  			  <!-- <tr> -->
+  	              <td align=center width=1000px>
+  					<center>
+						  <td><img class="round" style="width:1000px" src="./index_files/Sparse-view.png"/></a>
+						  </td>
+	  		  		</center>
+	  		  		</td>
+			  <!-- </tr> -->
+		  </table>
+
+      	  <br>
+		  <hr>
+		      
+  		  <table align=center width=1000px>
+	 		<center><h1>Paper</h1></center>
+  			  <tr>
+				  <td><a href="./index_files/cvpr2023_SeSDF.pdf"><img class="layered-paper-big" style="height:250px" src="./index_files/cvpr2023_paper.png"/></a></td>
+				  <td><span style="font-size:14pt">Y. Cao, K. Han, K.-Y. K. Wong.<br>
+				  <b>SeSDF: Self-evolved Signed Distance Field for Implicit 3D Clothed Human Reconstruction.</b><br>
+				  In CVPR, 2023. <a href="./index_files/cvpr2023_SeSDF.pdf">[pdf]<br><br></a>
+				  <pre><code>@inproceedings{cao2023sesdf,
+author    = {Yukang Cao and Kai Han and Kwan-Yee K. Wong},
+title     = {SeSDF: Self-evolved Signed Distance Field for Implicit 3D Clothed Human Reconstruction},
+booktitle = {IEEE Conference on Computer Vision and Pattern Recognition (CVPR)},
+year      = {2023},
+}</code></pre>
+  		  </table>
+		  <br>
+  		  <br>
+		  <hr>
+
+		  <center>
+    		<h2>Code for SeSDF will be available at <a href="https://github.com/yukangcao">Github</a>!</h2>
+		  </center>
+		  <hr>
+
+  		  <!-- <br> -->
+		  <!-- <hr> -->
+		  	
+  		  <table align=center width=1000px>
+  			  <tr>
+  	              <td width=400px>
+  					<left>
+	  		  <center><h1>Acknowledgements</h1></center>
+	  		  This work is supported by Hong Kong Research Grant Council - Early Career Scheme (Grant No. 27208022) and HKU Seed Fund for Basic Research. 
+			  We appreciate the very helpful discussions with Dr. Guanying Chen. 
+			  We also thank Yuliang Xiu, Yuanlu Xu for ARCH and ARCH++ results. 
+			</left>
+		</td>
+			 </tr>
+		</table>
+
+		<br><br>
+<p style="text-align:center;font-size:16px;">
+    Webpage template borrowed from <a href="https://richzhang.github.io/splitbrainauto/">Split-Brain Autoencoders, CVPR 2017</a>.
+</p>
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+
+  ga('create', 'UA-75863369-2', 'auto');
+  ga('send', 'pageview');
+
+</script>
+              
+</body>
+</html>
+ 
