@@ -103,49 +103,20 @@ class Evaluator:
         self.cuda = cuda
         self.netG = netG
 
-    def load_image(self, image_path, mask_path, smpl_path, param_path):
+    def load_image(self, image_path, mask_path, smpl_path):
         ##### Name
         img_name = os.path.splitext(os.path.basename(image_path))[0]
         
         ##### BBox
         # PIFu set the BBox to be [-1, 1] originally
         # We sepecifically set the BBox to help easily align huamn mesh and 3DMM
-        B_MIN = np.array([-0.5, -0.5, -0.5])
-        B_MAX = np.array([0.5, 0.5, 0.5])
-        # B_MIN = np.array([-1, -1, -1])
-        # B_MAX = np.array([1, 1, 1])
+        B_MIN = np.array([-1, -1, -1])
+        B_MAX = np.array([1, 1, 1])
         
         ##### Calibration (Intrinsic)
-        # projection_matrix = np.identity(4)
-        # projection_matrix[1, 1] = -1
-        # calib = torch.Tensor(projection_matrix).float()
-        param = np.load(param_path, allow_pickle=True)
-            # pixel unit / world unit
-        ortho_ratio = param.item().get('ortho_ratio')
-            # world unit / model unit
-        scale = param.item().get('scale')
-            # camera center world coordinate
-        center = param.item().get('center')
-            # model rotation
-        R = param.item().get('R')
-
-        translate = -np.matmul(R, center).reshape(3, 1)
-        extrinsic = np.concatenate([R, translate], axis=1)
-        extrinsic = np.concatenate([extrinsic, np.array([0, 0, 0, 1]).reshape(1, 4)], 0)
-            # Match camera space to image pixel space
-        scale_intrinsic = np.identity(4)
-        scale_intrinsic[0, 0] = scale / ortho_ratio
-        scale_intrinsic[1, 1] = -scale / ortho_ratio
-        scale_intrinsic[2, 2] = scale / ortho_ratio
-            # Match image pixel space to image uv space
-        uv_intrinsic = np.identity(4)
-        uv_intrinsic[0, 0] = 1.0 / float(self.opt.loadSize // 2)
-        uv_intrinsic[1, 1] = 1.0 / float(self.opt.loadSize // 2)
-        uv_intrinsic[2, 2] = 1.0 / float(self.opt.loadSize // 2)
-            # Transform under image pixel space
-        trans_intrinsic = np.identity(4)
-        intrinsic = np.matmul(trans_intrinsic, np.matmul(uv_intrinsic, scale_intrinsic))
-        calib = torch.Tensor(np.matmul(intrinsic, extrinsic)).float()
+        projection_matrix = np.identity(4)
+        projection_matrix[1, 1] = -1
+        calib = torch.Tensor(projection_matrix).float()
         
         ##### Mask
         mask = Image.open(mask_path).convert('L')
@@ -198,14 +169,13 @@ if __name__ == '__main__':
     test_images = [f for f in test_images if ('png' in f or 'jpg' in f) and (not 'mask' in f) and (not 'normal' in f)]
     test_masks = [f[:-4]+'_mask.png' for f in test_images]
     test_smpl = [f[:-4]+'_smplx.obj' for f in test_images]
-    test_param = [f[:-4]+'.npy' for f in test_images]
     
     print("num; ", len(test_masks))
 
-    for image_path, mask_path, smpl_path, param_path in tqdm.tqdm(zip(test_images, test_masks, test_smpl, test_param)):
+    for image_path, mask_path, smpl_path in tqdm.tqdm(zip(test_images, test_masks, test_smpl)):
         try:
             print(image_path, 'subject being processed')
-            data = evaluator.load_image(image_path, mask_path, smpl_path, param_path)
+            data = evaluator.load_image(image_path, mask_path, smpl_path)
             evaluator.eval(data, True)
         except Exception as e:
            print("error:", e.args)
