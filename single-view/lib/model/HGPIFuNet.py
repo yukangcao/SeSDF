@@ -249,11 +249,11 @@ class HGPIFuNet(BasePIFuNet):
             else:
                 sdf_field = sdf_module[:, 0, :].unsqueeze(0)
                 sdf_field = self.embed_fn(sdf_field.permute(0,2,1))
-                sdf_field = sdf_field.permute(0, 2, 1).repeat(self.num_views, 1, 1)
+                sdf_field = sdf_field.permute(0, 2, 1).repeat(batch_size, 1, 1)
                 
                 normal_field = sdf_module[:, 1:, :].repeat(batch_size, 1, 1)
                 
-                point_local_feat_field = torch.cat([point_local_feat2d, point_feat_3d, sdf_field, normal_smpl], dim=1)
+                point_local_feat_field = torch.cat([point_local_feat2d, point_feat_3d, sdf_field, normal_field], dim=1)
                 pred_occ = self.surface_classifier_occ(point_local_feat_field)
                 
                 self.intermediate_preds_list.append(pred_occ)
